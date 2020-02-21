@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>Hello World!</title>
+   <link rel="stylesheet" href="../assets/css/main.css">
+   <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+</head>
+
+<body>
+   <!-- Entrée -->
+   <div class="row">
+      <div class="position-container">
+         <h1>ENTRÉE</h1>
+      </div>
+      <div class="actual-container">
+         <p class="subtext">Affiche Acutelle</p>
+         <h1 class="actual-container__affiche" id="entree-text">Aucune</h1>
+      </div>
+      <div class="right-container">
+         <button class="imgDelete" id="imgDelete-entree">Supprimer cet affichage</button>
+         <button class="imgChoose">Choisir une image..</button>
+      </div>
+   </div>
+
+   <!-- Borne PABLO -->
+   <div class="row">
+      <div class="position-container">
+         <h1>BORNE PABLO</h1>
+      </div>
+      <div class="actual-container">
+         <p class="subtext">Affiche Acutelle</p>
+         <h1 class="actual-container__affiche" id="borne-pablo-text">Aucune</h1>
+      </div>
+      <div class="right-container">
+         <button class="imgDelete" id="imgDelete-borne-pablo">Supprimer cet affichage</button>
+         <button class="imgChoose">Choisir une image..</button>
+      </div>
+   </div>
+   <div class="row">
+      <button class="btnClose">Éteindre tous les affichages</button>
+   </div>
+   <script src="index.js"></script>
+</body>
+
+</html>

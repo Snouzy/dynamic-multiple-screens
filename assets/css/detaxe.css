@@ -1,0 +1,14 @@
+body {
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+}
+.container-fullImg-detaxe {
+   height: 100vh;
+   width: 100vw;
+   background: url(../images/affiche_pablo-1920x1080.png);
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-position: center;
+}
