@@ -42,7 +42,24 @@ ipc.on('targetPriceVal', function(event, arg) {
    targetPrice.innerHTML = targetPriceVal.toLocaleString('fr') + '€';
 });
 ipc.on('newAffiche', function(event, arg) {
-   console.log(
-      (document.getElementById('imgEntree').src = `../assets/images/${arg}.png`)
-   );
+   switch (arg) {
+      case 'affiche_pablo':
+         document.getElementById(
+            'entree-thumbnail'
+         ).src = `../assets/images/${arg}.png`;
+         document.getElementById('entree-thumbnail').style.display = `block`;
+         document.getElementById('entree-thumbnail').style.width = `15rem`;
+         document.getElementById('entree-info-text').innerHTML = arg;
+         document.getElementById('entree-main-text').style.display = `none`;
+         break;
+      case 'acces_interdit2':
+         document.getElementById(
+            'entree-thumbnail'
+         ).src = `../assets/images/${arg}.png`;
+         document.getElementById('entree-thumbnail').style.display = `block`;
+         document.getElementById('entree-thumbnail').style.width = `15rem`;
+         document.getElementById('entree-info-text').innerHTML = arg;
+   }
+   if (arg === 'affiche_pablo') {
+   }
 });
