@@ -2,11 +2,12 @@ const electron = require('electron');
 const path = require('path');
 const BrowserWindow = electron.remote.BrowserWindow;
 const remote = electron.remote;
-const ipc = electron.ipcRenderer;
+// const ipc = electron.ipcRenderer;
 const closeBtn = document.getElementById('closeBtn');
 const imgs = document.querySelectorAll('img');
 const { ipcRenderer } = require('electron');
-ipcRenderer.send('my-closeallwindowsasap-channel'); // can have arguments
+const ipc = require('electron').ipcMain; //test
+// ipcRenderer.send('my-closeallwindowsasap-channel'); // envoi un evt pour fermer toutes les fenêtres
 closeBtn.addEventListener('click', function(event) {
    console.log('clicked');
    var window = remote.getCurrentWindow();
@@ -24,12 +25,14 @@ updateBtn.addEventListener('click', function() {
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       let modalPath;
+      let win;
       if (this.id === 'affiche_pablo') {
          modalPath = path.join('file://', __dirname, 'detaxe.html');
+         ipcRenderer.send('affiche-ajoutee', 'affiche_pablo');
       }
-      console.log(BrowserWindow.getAllWindows());
+      // console.log(BrowserWindow.getAllWindows());
 
-      let win = new BrowserWindow({
+      win = new BrowserWindow({
          webPreferences: {
             nodeIntegration: true
          },

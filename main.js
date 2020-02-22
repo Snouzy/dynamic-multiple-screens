@@ -43,6 +43,7 @@ function createWindow() {
 //    }
 // ]);
 // Menu.setApplicationMenu(menu);
+
 // Cette méthode sera appelée quant Electron aura fini
 // de s'initialiser et prêt à créer des fenêtres de navigation.
 // Certaines APIs peuvent être utilisées uniquement quand cet événement est émit.
@@ -71,7 +72,13 @@ ipc.on('update-notify-value', function(event, arg) {
 
 //Quand il reçoit la notification, il ferme tout.
 ipc.on('my-closeallwindowsasap-channel', (event, arg) => {
-   BrowserWindow.getAllWindows().forEach(window => {
-      window.close();
-   });
+   console.log(event);
+   console.log(arg);
+   // BrowserWindow.getAllWindows().forEach(window => {
+   //    window.close();
+   // });
+});
+
+ipc.on('affiche-ajoutee', function(event, arg) {
+   win.webContents.send('newAffiche', arg);
 });

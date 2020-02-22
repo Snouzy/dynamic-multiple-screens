@@ -45,3 +45,17 @@ button {
 .btnClose {
    background: red;
 }
+
+/* 
+=============== 
+Miniatures 
+=============== */
+
+.actual-container {
+   display: flex;
+   flex-direction: column;
+}
+
+.thumbnail {
+   height: 100px;
+}
