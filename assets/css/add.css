@@ -12,8 +12,16 @@ p.notify {
    -webkit-app-region: drag;
 }
 
-img {
+img:hover {
+   cursor: pointer;
+}
+#affiche_pablo {
    width: 210px;
+}
+
+#acces_interdit2 {
+   height: 50vh;
+   width: 40vh;
 }
 
 .principal-row {

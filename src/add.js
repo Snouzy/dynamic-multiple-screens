@@ -60,12 +60,6 @@ imgs.forEach(img => {
             ipc.send('affiche-ajoutee', 'acces_interdit2');
          }
       });
-      // BrowserWindow.getAllWindows().forEach(el => {
-      //    if (el.getTitle() === 'Document') {
-      //       el.close();
-      //    }
-      // });
-      // }
 
       win.on('close', function() {
          win = null;

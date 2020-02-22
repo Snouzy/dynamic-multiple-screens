@@ -12,7 +12,6 @@ PABLO LINE
 const pabloThumbnail = document.getElementById('pablo-thumbnail');
 const pabloInfoText = document.getElementById('pablo-info-text');
 const pabloMainText = document.getElementById('pablo-main-text');
-// global.windowIndex = 'windowIndex';
 
 /* 
 =============== 
@@ -27,12 +26,6 @@ const imgsLinks = document.querySelectorAll('.imgChoose');
 const btnDelete = document.querySelectorAll('.imgDelete');
 let imgClicked = '';
 
-// btnDelete.forEach(btn => {
-//    btn.addEventListener('click', function(event) {
-//       console.log(event.target.id);
-//       ipcRenderer.send('my-closeallwindowsasap-channel', event.target.id);
-//    });
-// });
 ipc.on('changingURL', function(event, arg) {
    console.log(arg);
 });
@@ -41,11 +34,6 @@ ipc.on('message', (event, message) => {
    console.log(message);
 });
 
-// console.log(
-//    BrowserWindow.getAllWindows().filter(b => {
-//       return b.getTitle() === 'fullscreen-img';
-//    })
-// );
 //Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
@@ -127,10 +115,6 @@ imgsLinks.forEach(btn => {
 ipc.on('img-added', function() {
    console.log('capturing img-added on index.js');
 });
-// ipc.on('targetPriceVal', function(event, arg) {
-//    targetPriceVal = Number(arg);
-//    targetPrice.innerHTML = targetPriceVal.toLocaleString('fr') + '€';
-// });
 
 /* Gère les thumbnails */
 ipc.on('newAffiche', function(event, arg) {
@@ -171,6 +155,7 @@ ipc.on('newAffiche', function(event, arg) {
    }
 });
 
+//Close the app
 document.querySelector('.btnClose').addEventListener('click', function() {
    ipc.send('closeallwindows');
 });
