@@ -17,11 +17,15 @@ body {
    display: flex;
    justify-content: space-around;
 }
-
+.rowClose {
+   background: none;
+   border: none;
+}
 .position-container {
    background: #353535;
    padding: 0 10px;
    text-align: center;
+   border-radius: 5px;
 }
 .actual-container {
    padding: 20px;
@@ -41,11 +45,20 @@ button {
    padding: 10px;
    margin-right: 30px;
    cursor: pointer;
+   border-radius: 5px;
+   transition: all 0.5s ease-in-out;
 }
+
+button:hover {
+   background: #6f73f1;
+}
+
 .btnClose {
    background: red;
 }
-
+.btnClose:hover {
+   background: salmon;
+}
 /* 
 =============== 
 Miniatures 

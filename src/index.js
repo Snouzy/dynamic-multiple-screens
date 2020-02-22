@@ -97,11 +97,12 @@ imgsLinks.forEach(btn => {
          webPreferences: {
             nodeIntegration: true
          },
-         frame: false,
+         frame: true,
          alwaysOnTop: true,
          width: 600,
-         height: 600
+         height: 1000
       });
+      win.setMenu(null);
       win.loadURL(modalPath);
       win.on('close', function() {
          win = null;
