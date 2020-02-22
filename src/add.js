@@ -2,11 +2,12 @@ const electron = require('electron');
 const path = require('path');
 const BrowserWindow = electron.remote.BrowserWindow;
 const remote = electron.remote;
-// const ipc = electron.ipcRenderer;
+const ipc = electron.ipcRenderer;
 const closeBtn = document.getElementById('closeBtn');
 const imgs = document.querySelectorAll('img');
-const { ipcRenderer } = require('electron');
-const ipc = require('electron').ipcMain; //test
+let win;
+console.log('hello from the global ccontext');
+
 // ipcRenderer.send('my-closeallwindowsasap-channel'); // envoi un evt pour fermer toutes les fenêtres
 closeBtn.addEventListener('click', function(event) {
    console.log('clicked');
@@ -14,22 +15,27 @@ closeBtn.addEventListener('click', function(event) {
    window.close();
 });
 
-const updateBtn = document.getElementById('updateBtn');
+ipc.on('testing', function(event, args) {
+   console.log(args);
+});
 
-updateBtn.addEventListener('click', function() {
-   ipc.send('update-notify-value', document.getElementById('notifyVal').value);
-   const window = remote.getCurrentWindow();
-   window.close();
+ipc.on('img-choosed', function(event, arg) {
+   console.log('add.js - img-choosed declanché');
+   console.log(arg);
 });
 
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       let modalPath;
-      let win;
       if (this.id === 'affiche_pablo') {
          modalPath = path.join('file://', __dirname, 'detaxe.html');
-         ipcRenderer.send('affiche-ajoutee', 'affiche_pablo');
+         ipc.send('affiche-ajoutee', 'affiche_pablo');
       }
+      if (this.id === 'acces_interdit2') {
+         modalPath = path.join('file://', __dirname, 'accesInterdit.html');
+         ipc.send('affiche-ajoutee', 'acces_interdit2');
+      }
+
       // console.log(BrowserWindow.getAllWindows());
 
       win = new BrowserWindow({
@@ -49,3 +55,11 @@ imgs.forEach(img => {
       win.show();
    });
 });
+
+// const updateBtn = document.getElementById('updateBtn');
+
+// updateBtn.addEventListener('click', function() {
+//    ipc.send('update-notify-value', document.getElementById('notifyVal').value);
+//    const window = remote.getCurrentWindow();
+//    window.close();
+// });

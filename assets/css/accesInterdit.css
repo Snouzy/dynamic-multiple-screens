@@ -1,0 +1,14 @@
+body {
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+}
+.container-fullImg-accesInterdit {
+   height: 100vh;
+   width: 100vw;
+   background: url(../images/acces_interdit2.png);
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-position: center;
+}
