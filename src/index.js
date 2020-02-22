@@ -41,40 +41,64 @@ ipc.on('message', (event, message) => {
    console.log(message);
 });
 
-//Clique sur le bouton supprimer
 // console.log(
 //    BrowserWindow.getAllWindows().filter(b => {
 //       return b.getTitle() === 'fullscreen-img';
 //    })
 // );
+//Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
-      if (this.id === 'btnDelete-entree') {
-         BrowserWindow.getAllWindows().forEach(el => {
+      // ENTREE
+      BrowserWindow.getAllWindows().forEach(el => {
+         if (this.id === 'btnDelete-entree') {
+            console.log('rentré dans le this.id ok');
+            console.log(entreeThumbnail.src);
+            console.log(entreeThumbnail.getAttribute('data-image'));
             if (
-               el.getTitle() === 'Détaxe & Taxe refund' ||
-               el.getTitle() === 'Accès Interdit'
+               entreeThumbnail.getAttribute('data-image') === 'affiche_pablo'
             ) {
-               el.close();
-               entreeThumbnail.style.display = `none`;
-               entreeMainText.style.display = `block`;
-               entreeInfoText.innerHTML = 'Aucun';
+               console.log('rentrée dans le .Src');
+               if (el.getTitle() === 'Détaxe & Taxe refund') {
+                  el.close();
+                  entreeThumbnail.style.display = `none`;
+                  entreeMainText.style.display = `block`;
+                  entreeInfoText.innerHTML = 'Aucun';
+               }
             }
-         });
-      }
-      if (this.id === 'btnDelete-borne-pablo') {
-         BrowserWindow.getAllWindows().forEach(el => {
             if (
-               el.getTitle() === 'Accès Interdit' ||
-               el.getTitle() === 'Détaxe & Taxe refund'
+               entreeThumbnail.getAttribute('data-image') === 'acces_interdit2'
             ) {
-               el.close();
-               pabloThumbnail.style.display = `none`;
-               pabloMainText.style.display = `block`;
-               pabloInfoText.innerHTML = 'Aucun';
+               if (el.getTitle() === 'Accès Interdit') {
+                  el.close();
+                  entreeThumbnail.style.display = `none`;
+                  entreeMainText.style.display = `block`;
+                  entreeInfoText.innerHTML = 'Aucun';
+               }
             }
-         });
-      }
+         }
+         if (this.id === 'btnDelete-borne-pablo') {
+            if (pabloThumbnail.getAttribute('data-image') === 'affiche_pablo') {
+               console.log('rentrée dans le .Src');
+               if (el.getTitle() === 'Détaxe & Taxe refund') {
+                  el.close();
+                  pabloThumbnail.style.display = `none`;
+                  pabloMainText.style.display = `block`;
+                  pabloInfoText.innerHTML = 'Aucun';
+               }
+            }
+            if (
+               pabloThumbnail.getAttribute('data-image') === 'acces_interdit2'
+            ) {
+               if (el.getTitle() === 'Accès Interdit') {
+                  el.close();
+                  pabloThumbnail.style.display = `none`;
+                  pabloMainText.style.display = `block`;
+                  pabloInfoText.innerHTML = 'Aucun';
+               }
+            }
+         }
+      });
    });
 });
 //Au click sur "Choisir une image..." -> add.html / add.js
@@ -114,6 +138,7 @@ ipc.on('newAffiche', function(event, arg) {
    if (arg === 'affiche_pablo' && imgClicked === 'imgChoose-entree') {
       entreeThumbnail.src = `../assets/images/${arg}.png`;
       entreeThumbnail.style.display = `block`;
+      entreeThumbnail.setAttribute('data-image', arg);
       entreeInfoText.innerHTML = arg;
       entreeMainText.style.display = `none`;
       entreeThumbnail.style.width = `15rem`;
@@ -121,6 +146,7 @@ ipc.on('newAffiche', function(event, arg) {
    if (arg === 'acces_interdit2' && imgClicked === 'imgChoose-entree') {
       entreeThumbnail.src = `../assets/images/${arg}.png`;
       entreeThumbnail.style.display = `block`;
+      entreeThumbnail.setAttribute('data-image', arg);
       entreeThumbnail.style.width = `8rem`;
       entreeInfoText.innerHTML = arg;
       entreeMainText.style.display = `none`;
@@ -129,13 +155,16 @@ ipc.on('newAffiche', function(event, arg) {
    if (arg === 'affiche_pablo' && imgClicked === 'imgChoose-borne-pablo') {
       pabloThumbnail.src = `../assets/images/${arg}.png`;
       pabloThumbnail.style.display = `block`;
+      pabloThumbnail.setAttribute('data-image', arg);
       pabloThumbnail.style.width = `15rem`;
       pabloInfoText.innerHTML = arg;
       pabloMainText.style.display = `none`;
    }
    if (arg === 'acces_interdit2' && imgClicked === 'imgChoose-borne-pablo') {
+      console.log(arg);
       pabloThumbnail.src = `../assets/images/${arg}.png`;
       pabloThumbnail.style.display = `block`;
+      pabloThumbnail.setAttribute('data-image', arg);
       pabloThumbnail.style.width = `8rem`;
       pabloInfoText.innerHTML = arg;
       pabloMainText.style.display = `none`;
