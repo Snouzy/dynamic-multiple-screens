@@ -2,6 +2,10 @@ const { app, BrowserWindow, Menu } = require('electron');
 const shell = require('electron').shell;
 const ipc = require('electron').ipcMain;
 let win;
+const { webContents } = require('electron');
+global.windowAdd = null;
+global.windowIndex = null;
+
 function createWindow() {
    // Cree la fenetre du navigateur.
    win = new BrowserWindow({
@@ -65,20 +69,26 @@ app.on('activate', () => {
       createWindow();
    }
 });
-
 ipc.on('update-notify-value', function(event, arg) {
    win.webContents.send('targetPriceVal', arg);
 });
 
 //Quand il reçoit la notification, il ferme tout.
-ipc.on('my-closeallwindowsasap-channel', (event, arg) => {
-   console.log(event);
-   console.log(arg);
-   // BrowserWindow.getAllWindows().forEach(window => {
-   //    window.close();
-   // });
+ipc.on('closeallwindows', (event, arg) => {
+   BrowserWindow.getAllWindows().forEach(window => {
+      window.close();
+   });
 });
 
 ipc.on('affiche-ajoutee', function(event, arg) {
    win.webContents.send('newAffiche', arg);
+});
+
+ipc.on('open-img', function(event, arg) {
+   win.webContents.send('test', 'testing');
+});
+
+ipc.on('changeURL', function(event, arg) {
+   console.log('captured changeURL');
+   win.webContents.send('changingURL', arg);
 });

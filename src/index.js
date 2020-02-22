@@ -9,9 +9,10 @@ const entreeMainText = document.getElementById('entree-main-text');
 =============== 
 PABLO LINE
 =============== */
-const pabloThumbail = document.getElementById('pablo-thumbnail');
+const pabloThumbnail = document.getElementById('pablo-thumbnail');
 const pabloInfoText = document.getElementById('pablo-info-text');
 const pabloMainText = document.getElementById('pablo-main-text');
+// global.windowIndex = 'windowIndex';
 
 /* 
 =============== 
@@ -19,18 +20,63 @@ GENERAL
 =============== */
 const electron = require('electron');
 const path = require('path');
+const remote = require('electron').remote;
 const BrowserWindow = electron.remote.BrowserWindow;
 const ipc = electron.ipcRenderer;
 const imgsLinks = document.querySelectorAll('.imgChoose');
 const btnDelete = document.querySelectorAll('.imgDelete');
 let imgClicked = '';
+
 // btnDelete.forEach(btn => {
 //    btn.addEventListener('click', function(event) {
 //       console.log(event.target.id);
 //       ipcRenderer.send('my-closeallwindowsasap-channel', event.target.id);
 //    });
 // });
+ipc.on('changingURL', function(event, arg) {
+   console.log(arg);
+});
 
+ipc.on('message', (event, message) => {
+   console.log(message);
+});
+
+//Clique sur le bouton supprimer
+// console.log(
+//    BrowserWindow.getAllWindows().filter(b => {
+//       return b.getTitle() === 'fullscreen-img';
+//    })
+// );
+document.querySelectorAll('.btnDelete').forEach(btn => {
+   btn.addEventListener('click', function() {
+      if (this.id === 'btnDelete-entree') {
+         BrowserWindow.getAllWindows().forEach(el => {
+            if (
+               el.getTitle() === 'Détaxe & Taxe refund' ||
+               el.getTitle() === 'Accès Interdit'
+            ) {
+               el.close();
+               entreeThumbnail.style.display = `none`;
+               entreeMainText.style.display = `block`;
+               entreeInfoText.innerHTML = 'Aucun';
+            }
+         });
+      }
+      if (this.id === 'btnDelete-borne-pablo') {
+         BrowserWindow.getAllWindows().forEach(el => {
+            if (
+               el.getTitle() === 'Accès Interdit' ||
+               el.getTitle() === 'Détaxe & Taxe refund'
+            ) {
+               el.close();
+               pabloThumbnail.style.display = `none`;
+               pabloMainText.style.display = `block`;
+               pabloInfoText.innerHTML = 'Aucun';
+            }
+         });
+      }
+   });
+});
 //Au click sur "Choisir une image..." -> add.html / add.js
 imgsLinks.forEach(btn => {
    btn.addEventListener('click', function(event) {
@@ -44,20 +90,19 @@ imgsLinks.forEach(btn => {
          width: 600,
          height: 600
       });
-      win.show();
       win.loadURL(modalPath);
       win.on('close', function() {
          win = null;
       });
       imgClicked = this.id;
-      // win.webContents.once('dom-ready', () => {
-      //    ipc.send('changing-image-clicked', this.id);
-      // });
+      ipc.send('add-img', this.id);
+      win.show();
       win.webContents.openDevTools();
-      console.log(imgClicked);
    });
 });
-
+ipc.on('img-added', function() {
+   console.log('capturing img-added on index.js');
+});
 // ipc.on('targetPriceVal', function(event, arg) {
 //    targetPriceVal = Number(arg);
 //    targetPrice.innerHTML = targetPriceVal.toLocaleString('fr') + '€';
@@ -82,17 +127,21 @@ ipc.on('newAffiche', function(event, arg) {
    }
    /* LIGNE PABLO  */
    if (arg === 'affiche_pablo' && imgClicked === 'imgChoose-borne-pablo') {
-      pabloThumbail.src = `../assets/images/${arg}.png`;
-      pabloThumbail.style.display = `block`;
-      pabloThumbail.style.width = `15rem`;
+      pabloThumbnail.src = `../assets/images/${arg}.png`;
+      pabloThumbnail.style.display = `block`;
+      pabloThumbnail.style.width = `15rem`;
       pabloInfoText.innerHTML = arg;
       pabloMainText.style.display = `none`;
    }
    if (arg === 'acces_interdit2' && imgClicked === 'imgChoose-borne-pablo') {
-      pabloThumbail.src = `../assets/images/${arg}.png`;
-      pabloThumbail.style.display = `block`;
-      pabloThumbail.style.width = `8rem`;
+      pabloThumbnail.src = `../assets/images/${arg}.png`;
+      pabloThumbnail.style.display = `block`;
+      pabloThumbnail.style.width = `8rem`;
       pabloInfoText.innerHTML = arg;
       pabloMainText.style.display = `none`;
    }
+});
+
+document.querySelector('.btnClose').addEventListener('click', function() {
+   ipc.send('closeallwindows');
 });

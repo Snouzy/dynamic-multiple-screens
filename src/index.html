@@ -3,7 +3,7 @@
 
 <head>
    <meta charset="UTF-8">
-   <title>Hello World!</title>
+   <title>Logiciel d'affichage dynamique - SN0uZyDYNAMIC - by Mathias Bradiceanu</title>
    <link rel="stylesheet" href="../assets/css/main.css">
    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
@@ -16,15 +16,15 @@
          <h1>ENTRÉE</h1>
       </div>
       <div class="actual-container">
-         <p class="subtext">Affichage Acutel :
+         <p class="subtext">Affichage Actuel :
             <span class="actual-container__affiche"><strong id="entree-info-text">Aucun</strong></span>
          </p>
          <h1 id="entree-main-text">Aucun</h1>
          <img src="" alt="Pas d'image disponible" id="entree-thumbnail" class="thumbnail">
       </div>
       <div class="right-container">
-         <button class="imgDelete" id="imgDelete-entree">Supprimer cet affichage</button>
-         <button class="imgChoose" id="imgChoose-entree">Choisir une image..</button>
+         <button class="btnDelete" id="btnDelete-entree">Supprimer l'affichage</button>
+         <button class="imgChoose" id="imgChoose-entree">Changer l'affichage..</button>
       </div>
    </div>
 
@@ -34,19 +34,19 @@
          <h1>BORNE<br>PABLO</h1>
       </div>
       <div class="actual-container">
-         <p class="subtext">Affichage Acutel :
+         <p class="subtext">Affichage Actuel :
             <span class="actual-container__affiche"><strong id="pablo-info-text">Aucun</strong></span>
          </p>
          <h1 id="pablo-main-text">Aucun</h1>
          <img src="" alt="Pas d'image disponible" id="pablo-thumbnail" class="thumbnail">
       </div>
       <div class="right-container">
-         <button class="imgDelete" id="imgDelete-borne-pablo">Supprimer cet affichage</button>
-         <button class="imgChoose" id="imgChoose-borne-pablo">Choisir une image..</button>
+         <button class="btnDelete" id="btnDelete-borne-pablo">Supprimer l'affichage</button>
+         <button class="imgChoose" id="imgChoose-borne-pablo">Changer l'affichage..</button>
       </div>
    </div>
    <div class="row">
-      <button class="btnClose">Éteindre tous les affichages</button>
+      <button class="btnClose">Fermer l'application</button>
    </div>
    <script src="index.js"></script>
 </body>
