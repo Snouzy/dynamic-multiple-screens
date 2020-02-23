@@ -80,6 +80,9 @@ ipc.on('closeallwindows', (event, arg) => {
    });
 });
 
+ipc.on('reload', function() {
+   win.reload();
+});
 ipc.on('affiche-ajoutee', function(event, arg) {
    win.webContents.send('newAffiche', arg);
 });

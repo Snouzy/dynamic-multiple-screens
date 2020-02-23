@@ -19,7 +19,7 @@ GENERAL
 =============== */
 const electron = require('electron');
 const path = require('path');
-const remote = require('electron').remote;
+const remote = electron.remote;
 const BrowserWindow = electron.remote.BrowserWindow;
 const ipc = electron.ipcRenderer;
 const imgsLinks = document.querySelectorAll('.imgChoose');
@@ -29,24 +29,26 @@ let imgClicked = '';
 ipc.on('changingURL', function(event, arg) {
    console.log(arg);
 });
-
-ipc.on('message', (event, message) => {
-   console.log(message);
+//Clique sur le bouton fermer tous les affichages
+document.querySelector('.btnReload').addEventListener('click', function() {
+   BrowserWindow.getAllWindows().forEach(el => {
+      if (el.getTitle() !== remote.getCurrentWindow().getTitle()) {
+         el.close();
+      }
+   });
+   ipc.send('reload');
 });
-
 //Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
+      document.getElementById('numberOfDisplays').innerHTML =
+         BrowserWindow.getAllWindows().length - 2;
       // ENTREE
       BrowserWindow.getAllWindows().forEach(el => {
          if (this.id === 'btnDelete-entree') {
-            console.log('rentré dans le this.id ok');
-            console.log(entreeThumbnail.src);
-            console.log(entreeThumbnail.getAttribute('data-image'));
             if (
                entreeThumbnail.getAttribute('data-image') === 'affiche_pablo'
             ) {
-               console.log('rentrée dans le .Src');
                if (el.getTitle() === 'Détaxe & Taxe refund') {
                   el.close();
                   entreeThumbnail.style.display = `none`;
@@ -89,6 +91,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
       });
    });
 });
+
 //Au click sur "Choisir une image..." -> add.html / add.js
 imgsLinks.forEach(btn => {
    btn.addEventListener('click', function(event) {
@@ -119,6 +122,8 @@ ipc.on('img-added', function() {
 
 /* Gère les thumbnails */
 ipc.on('newAffiche', function(event, arg) {
+   document.getElementById('numberOfDisplays').innerHTML =
+      BrowserWindow.getAllWindows().length - 2;
    /* LIGNE ENTREE  */
    if (arg === 'affiche_pablo' && imgClicked === 'imgChoose-entree') {
       entreeThumbnail.src = `../assets/images/${arg}.png`;

@@ -21,49 +21,51 @@ closeBtn.addEventListener('click', function(event) {
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       let modalPath;
-      //S'il y a déjà un affichage
-      // if (isPabloActive) {
-      //    ipc.send('changeURL', this.id);
-      // } else {
-      win = new BrowserWindow({
-         title: 'fullscreen-img',
-         webPreferences: {
-            nodeIntegration: true
-         },
-         frame: true,
-         alwaysOnTop: false,
-         width: screen.width,
-         height: screen.height
-      });
+      // S'il y a déjà un affichage
+      if (isPabloActive) {
+         ipc.send('pabloActive', true);
+         ipc.send('changeURL', this.id);
+      } else {
+         win = new BrowserWindow({
+            title: 'fullscreen-img',
+            webPreferences: {
+               nodeIntegration: true
+            },
+            frame: true,
+            alwaysOnTop: false,
+            width: screen.width,
+            height: screen.height
+         });
 
-      win.webContents.openDevTools();
+         win.webContents.openDevTools();
 
-      if (this.id === 'affiche_pablo') {
-         isPabloActive = true;
-         modalPath = path.join('file://', __dirname, 'detaxe.html');
-         // ipc.send('affiche-ajoutee', 'affiche_pablo');
-      }
-      if (this.id === 'acces_interdit2') {
-         acces_interdit2 = true;
-         modalPath = path.join('file://', __dirname, 'accesInterdit.html');
-         // ipc.send('affiche-ajoutee', 'acces_interdit2');
-      }
-      win.loadURL(modalPath);
-      win.setPosition(1536, 0);
-      win.show();
-
-      win.webContents.on('did-finish-load', () => {
          if (this.id === 'affiche_pablo') {
-            ipc.send('affiche-ajoutee', 'affiche_pablo');
+            isPabloActive = true;
+            modalPath = path.join('file://', __dirname, 'detaxe.html');
+            // ipc.send('affiche-ajoutee', 'affiche_pablo');
          }
          if (this.id === 'acces_interdit2') {
-            ipc.send('affiche-ajoutee', 'acces_interdit2');
+            acces_interdit2 = true;
+            modalPath = path.join('file://', __dirname, 'accesInterdit.html');
+            // ipc.send('affiche-ajoutee', 'acces_interdit2');
          }
-      });
+         win.loadURL(modalPath);
+         win.setPosition(1536, 0);
+         win.show();
 
-      win.on('close', function() {
-         win = null;
-      });
+         win.webContents.on('did-finish-load', () => {
+            if (this.id === 'affiche_pablo') {
+               ipc.send('affiche-ajoutee', 'affiche_pablo');
+            }
+            if (this.id === 'acces_interdit2') {
+               ipc.send('affiche-ajoutee', 'acces_interdit2');
+            }
+         });
+
+         // win.on('close', function() {
+         //    win = null;
+         // });
+      }
    });
 });
 
