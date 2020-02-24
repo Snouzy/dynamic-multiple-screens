@@ -38,7 +38,7 @@ imgs.forEach(img => {
       // Prépare le positionnement à gauche ou à droite en fonction de l'id
       let positionOfTheDisplay;
       if (response.rowClicked === 'entree') {
-         positionOfTheDisplay = -Math.abs(screen.width);
+         positionOfTheDisplay = 0 - screen.width;
       } else {
          positionOfTheDisplay = screen.width;
       }
@@ -52,17 +52,16 @@ imgs.forEach(img => {
             nodeIntegration: true
          },
          frame: false,
-         alwaysOnTop: true,
+         alwaysOnTop: false,
          width: screen.width,
-         height: screen.height,
-         x: positionOfTheDisplay,
-         y: 0
+         height: screen.height
       });
       win.webContents.openDevTools();
 
       modalPath = path.join('file://', __dirname, `${this.id}.html`);
 
       win.loadURL(modalPath);
+      win.setPosition(positionOfTheDisplay, 0);
       win.show();
       win.webContents.on('did-finish-load', () => {
          ipc.send('affiche-ajoutee', this.id);

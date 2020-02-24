@@ -27,7 +27,7 @@ const pabloMainText = document.getElementById('pablo-main-text');
 btnReload.addEventListener('click', () => {
    BrowserWindow.getAllWindows().forEach(el => {
       const currentTitle = remote.getCurrentWindow().getTitle();
-      el.getTitle() !== currentTitle ? el.close : null;
+      el.getTitle() !== currentTitle ? el.close() : null;
    });
    ipc.send('reload');
 });
