@@ -22,12 +22,10 @@ imgs.forEach(img => {
             }
          }
       });
-      console.log(this.id);
       const response = ipc.sendSync('getAndUpdateInfos', this.id);
       console.log(response);
 
       // Gauche ou droite ?
-      console.log(screen);
       let positioning;
       if (response.rowClicked === 'entree') {
          positioning = -Math.abs(screen.width);

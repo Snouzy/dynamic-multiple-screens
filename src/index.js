@@ -23,14 +23,10 @@ const remote = electron.remote;
 const BrowserWindow = electron.remote.BrowserWindow;
 const ipc = electron.ipcRenderer;
 const imgsLinks = document.querySelectorAll('.imgChoose');
-const btnDelete = document.querySelectorAll('.imgDelete');
 let rowClicked = '';
 let win;
 let modalPath;
 
-ipc.on('changingURL', function(event, arg) {
-   console.log(arg);
-});
 //Clique sur le bouton fermer tous les affichages
 document.querySelector('.btnReload').addEventListener('click', function() {
    BrowserWindow.getAllWindows().forEach(el => {

@@ -1,8 +1,6 @@
 const { app, BrowserWindow, Menu } = require('electron');
-const shell = require('electron').shell;
 const ipc = require('electron').ipcMain;
 let win;
-const { webContents } = require('electron');
 function createWindow() {
    // Cree la fenetre du navigateur.
    win = new BrowserWindow({
@@ -101,11 +99,6 @@ const currentDisplay = {
    },
    rowClicked: ''
 };
-// Au clic sur une des image : get src et modifie currentDisplay
-ipc.on('image-clicked', function(event, arg) {
-   console.log('captured changeURL with:', arg);
-   win.webContents.send('changingURL', arg);
-});
 
 // Au clic sur Choisir une image : change les props de currentDisplay
 ipc.on('capturing-choisirImg-click', function(event, arg) {
