@@ -40,6 +40,8 @@ document.querySelector('.btnReload').addEventListener('click', function() {
 //Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
+      //avoid negative numbers
+      if (document.getElementById('numberOfDisplays').innerHTML == 0) return;
       ipc.send('capturing-supprimerAffichage-click', this.id);
       const readResponse = ipc.sendSync('read-infos');
       // if(readResponse.rowClicked === 'entree'){
@@ -49,7 +51,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
       // }
       console.log('read response = ', readResponse);
 
-      //Nombre d'affichage
+      //update nb of displays
       document.getElementById('numberOfDisplays').innerHTML =
          BrowserWindow.getAllWindows().length - 2;
       // ENTREE
@@ -65,7 +67,6 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
                   el.getPosition()[0] < 0
                ) {
                   el.close();
-
                   entreeThumbnail.style.display = `none`;
                   entreeMainText.style.display = `block`;
                   entreeInfoText.innerHTML = 'Aucun';
@@ -78,6 +79,14 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
                   el.getTitle() === 'acces_interdit2' &&
                   el.getPosition()[0] < 0
                ) {
+                  el.close();
+                  entreeThumbnail.style.display = `none`;
+                  entreeMainText.style.display = `block`;
+                  entreeInfoText.innerHTML = 'Aucun';
+               }
+            }
+            if (entreeThumbnail.getAttribute('data-image') === 'parking') {
+               if (el.getTitle() === 'parking' && el.getPosition()[0] < 0) {
                   el.close();
                   entreeThumbnail.style.display = `none`;
                   entreeMainText.style.display = `block`;
@@ -105,6 +114,14 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
                   el.getTitle() === 'acces_interdit2' &&
                   el.getPosition()[0] > 0
                ) {
+                  el.close();
+                  pabloThumbnail.style.display = `none`;
+                  pabloMainText.style.display = `block`;
+                  pabloInfoText.innerHTML = 'Aucun';
+               }
+            }
+            if (pabloThumbnail.getAttribute('data-image') === 'parking') {
+               if (el.getTitle() === 'parking' && el.getPosition()[0] > 0) {
                   el.close();
                   pabloThumbnail.style.display = `none`;
                   pabloMainText.style.display = `block`;
@@ -172,6 +189,14 @@ ipc.on('newAffiche', function(event, arg) {
       entreeMainText.style.display = `none`;
       entreeThumbnail.style.width = `15rem`;
    }
+   if (arg === 'parking' && rowClicked === 'imgChoose-entree') {
+      entreeThumbnail.src = `../assets/images/${arg}.png`;
+      entreeThumbnail.style.display = `block`;
+      entreeThumbnail.setAttribute('data-image', arg);
+      entreeThumbnail.style.width = `8rem`;
+      entreeInfoText.innerHTML = arg;
+      entreeMainText.style.display = `none`;
+   }
    if (arg === 'acces_interdit2' && rowClicked === 'imgChoose-entree') {
       entreeThumbnail.src = `../assets/images/${arg}.png`;
       entreeThumbnail.style.display = `block`;
@@ -186,6 +211,14 @@ ipc.on('newAffiche', function(event, arg) {
       pabloThumbnail.style.display = `block`;
       pabloThumbnail.setAttribute('data-image', arg);
       pabloThumbnail.style.width = `15rem`;
+      pabloInfoText.innerHTML = arg;
+      pabloMainText.style.display = `none`;
+   }
+   if (arg === 'parking' && rowClicked === 'imgChoose-borne-pablo') {
+      pabloThumbnail.src = `../assets/images/${arg}.png`;
+      pabloThumbnail.style.display = `block`;
+      pabloThumbnail.setAttribute('data-image', arg);
+      pabloThumbnail.style.width = `8rem`;
       pabloInfoText.innerHTML = arg;
       pabloMainText.style.display = `none`;
    }

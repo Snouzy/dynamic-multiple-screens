@@ -5,12 +5,11 @@ const remote = electron.remote;
 const ipc = electron.ipcRenderer;
 const imgs = document.querySelectorAll('img');
 let win;
-let isPabloActive = false;
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       const readResponse = ipc.sendSync('read-infos');
       console.log('read response = ', readResponse);
-      // Supprime les vieilles BrowserWindow
+      // Supprime les vieilles fenêtres BrowserWindow
       BrowserWindow.getAllWindows().forEach(el => {
          if (readResponse.rowClicked === 'entree') {
             if (el.getTitle() === readResponse.entree.src) {
@@ -36,47 +35,37 @@ imgs.forEach(img => {
       let window = remote.getCurrentWindow();
       let modalPath;
       // S'il y a déjà un affichage
-      if (isPabloActive) {
-         ipc.send('pabloActive', true);
-         ipc.send('changeURL', this.id);
-      } else {
-         win = new BrowserWindow({
-            title: 'fullscreen-img',
-            webPreferences: {
-               nodeIntegration: true
-            },
-            frame: true,
-            alwaysOnTop: false,
-            width: screen.width,
-            height: screen.height
-         });
-         win.webContents.openDevTools();
 
+      win = new BrowserWindow({
+         title: 'fullscreen-img',
+         webPreferences: {
+            nodeIntegration: true
+         },
+         frame: true,
+         alwaysOnTop: false,
+         width: screen.width,
+         height: screen.height
+      });
+      win.webContents.openDevTools();
+
+      modalPath = path.join('file://', __dirname, `${this.id}.html`);
+
+      win.loadURL(modalPath);
+      win.setPosition(positioning, 0);
+      win.show();
+      win.webContents.on('did-finish-load', () => {
          if (this.id === 'affiche_pablo') {
-            isPabloActive = true;
-            modalPath = path.join('file://', __dirname, 'detaxe.html');
+            ipc.send('affiche-ajoutee', this.id);
          }
          if (this.id === 'acces_interdit2') {
-            acces_interdit2 = true;
-            modalPath = path.join('file://', __dirname, 'accesInterdit.html');
+            ipc.send('affiche-ajoutee', this.id);
          }
-         win.loadURL(modalPath);
-         win.setPosition(positioning, 0);
-         win.show();
+         if (this.id === 'parking') {
+            ipc.send('affiche-ajoutee', this.id);
+         }
 
-         win.webContents.on('did-finish-load', () => {
-            if (this.id === 'affiche_pablo') {
-               ipc.send('affiche-ajoutee', this.id);
-            }
-            if (this.id === 'acces_interdit2') {
-               ipc.send('affiche-ajoutee', this.id);
-            }
-            if (this.id === 'parking') {
-               ipc.send('affiche-ajoutee', this.id);
-            }
-            window.close();
-         });
-      }
+         window.close();
+      });
    });
 });
 

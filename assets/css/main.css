@@ -55,14 +55,15 @@ button {
 }
 
 button:hover {
-   background: #6f73f1;
+   background: #454bf8;
+   transform: scale(1.05);
 }
 
 .btnClose {
    background: red;
 }
 .btnClose:hover {
-   background: salmon;
+   background: rgb(250, 82, 63);
 }
 /* 
 =============== 

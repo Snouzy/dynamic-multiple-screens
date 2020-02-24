@@ -3,11 +3,11 @@ body {
    padding: 0;
    overflow: hidden;
 }
-.container-fullImg-detaxe {
+.container-fullImg-acces_interdit2 {
    height: 100vh;
    width: 100vw;
-   background: url(../images/affiche_pablo.png);
-   background-size: cover;
+   background: url(../images/acces_interdit2.png);
+   background-size: contain;
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-position: center;
