@@ -5,15 +5,17 @@
    <meta charset="UTF-8">
    <title>Logiciel d'affichage dynamique - SN0uZ'DYNAMIC - by Mathias Bradiceanu</title>
    <link rel="stylesheet" href="../assets/css/main.css">
-   <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
 </head>
 
 <body>
 
    <!-- Entrée -->
-   <h1>Total d'affichage(s) ACTIF(S) :
-      <span id="numberOfDisplays">0</span> / 2</h1>
+   <div class="row rowEnter">
+      <h1>Total d'affichage(s) ACTIF(S) :
+         <span id="numberOfDisplays">0</span> / 2</h1>
+
+   </div>
    <div class="row">
       <div class="position-container">
          <h1>ENTRÉE</h1>
@@ -26,8 +28,9 @@
          <img src="" alt="Thumbnail de l'entrée" id="entree-thumbnail" class="thumbnail">
       </div>
       <div class="right-container">
-         <button class="btnDelete" id="btnDelete-entree">Supprimer l'affichage</button>
          <button class="imgChoose" id="imgChoose-entree">Changer l'affichage..</button>
+         <button class="btnDelete" id="btnDelete-entree"><span>Supprimer l'affichage</span></button>
+
       </div>
    </div>
 
@@ -44,12 +47,13 @@
          <img src="" alt="Thumbnail de la borne" id="pablo-thumbnail" class="thumbnail">
       </div>
       <div class="right-container">
-         <button class="btnDelete" id="btnDelete-borne-pablo">Supprimer l'affichage</button>
          <button class="imgChoose" id="imgChoose-borne-pablo">Changer l'affichage..</button>
+         <button class="btnDelete" id="btnDelete-borne-pablo">Supprimer l'affichage</button>
       </div>
    </div>
    <div class="row rowClose">
       <button class="btnClose">Fermer l'application</button>
+      <p id="creator">Created by Mathias Bradiceanu ® 2020</p>
       <button class="btnReload">Éteindre tous les affichages</button>
    </div>
    <script src="index.js"></script>

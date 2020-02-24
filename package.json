@@ -12,7 +12,5 @@
    "devDependencies": {
       "electron": "8.0.1"
    },
-   "dependencies": {
-      "axios": "^0.19.2"
-   }
+   "dependencies": {}
 }

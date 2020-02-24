@@ -12,7 +12,7 @@ p.notify {
    -webkit-app-region: drag;
 }
 img {
-   border-radius: 10px;
+   border-radius: 3px;
 }
 img:hover {
    cursor: pointer;
@@ -25,18 +25,15 @@ img:hover {
 Thumbnails :  
 =============== */
 
-#parking {
-   height: 22vh;
-   width: 15vh;
-}
-
 #affiche_pablo {
-   width: 40vw;
+   height: 100%;
+   width: 50vw;
 }
 
-#acces_interdit2 {
-   height: 22vh;
-   width: 17vh;
+#acces_interdit2,
+#parking {
+   height: 35vh;
+   width: 28vh;
 }
 
 .principal-row {
@@ -58,6 +55,9 @@ Thumbnails :
    display: flex;
    align-items: center;
    justify-content: space-around;
+}
+.row3 {
+   height: 20%;
 }
 .row4 {
    width: 100%;

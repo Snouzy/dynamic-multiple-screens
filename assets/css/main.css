@@ -6,10 +6,12 @@ body {
    font-family: 'Montserrat';
    margin: 0;
 }
-
+#creator {
+   opacity: 0.3;
+}
 .row {
    width: 100%;
-   margin-top: 50px;
+   margin-top: 20px;
    background: #1a1a1a;
    border-bottom: 3px solid #011e6e;
    display: grid;
@@ -17,10 +19,12 @@ body {
    display: flex;
    justify-content: space-around;
 }
-.rowClose {
+.rowClose,
+.rowEnter {
    background: none;
    border: none;
 }
+
 .position-container {
    background: #353535;
    padding: 0 10px;
@@ -37,7 +41,7 @@ body {
 }
 
 button {
-   float: right;
+   /* float: right; */
    background: #011e6e;
    border: none;
    color: #fff;
@@ -45,8 +49,9 @@ button {
    padding: 10px;
    margin-right: 30px;
    cursor: pointer;
-   border-radius: 5px;
+   border-radius: 3px;
    transition: all 0.5s ease-in-out;
+   font-family: 'Montserrat';
 }
 
 button:hover {
