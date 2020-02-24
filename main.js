@@ -140,7 +140,7 @@ ipc.on('capturing-supprimerAffichage-click', (event, arg) => {
  * Donne les infos récupérées depui capturing-choisirImg-click
  * FROM index.js et le rend TO add.js
  ***/
-ipc.on('getImgInfos', (event, arg) => {
+ipc.on('getAndUpdateInfos', (event, arg) => {
    if (currentDisplay.rowClicked === 'entree') {
       currentDisplay.entree.isDisplaying = true;
       currentDisplay.entree.src = arg;
@@ -149,5 +149,11 @@ ipc.on('getImgInfos', (event, arg) => {
       currentDisplay.borne.isDisplaying = true;
       currentDisplay.borne.src = arg;
    }
+
+   console.log(currentDisplay);
+   event.returnValue = currentDisplay;
+});
+
+ipc.on('read-infos', (event, arg) => {
    event.returnValue = currentDisplay;
 });

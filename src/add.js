@@ -3,24 +3,24 @@ const path = require('path');
 const BrowserWindow = electron.remote.BrowserWindow;
 const remote = electron.remote;
 const ipc = electron.ipcRenderer;
-const closeBtn = document.getElementById('closeBtn');
 const imgs = document.querySelectorAll('img');
 let win;
 let isPabloActive = false;
-let acces_interdit2 = false;
-let isTheFirstChange = true;
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
+      const readResponse = ipc.sendSync('read-infos');
+      console.log('read response = ', readResponse);
       console.log(this.id);
-      const response = ipc.sendSync('getImgInfos', this.id);
+      const response = ipc.sendSync('getAndUpdateInfos', this.id);
       console.log(response);
 
       // Gauche ou droite ?
+      console.log(screen);
       let positioning;
       if (response.rowClicked === 'entree') {
-         positioning = -1536;
+         positioning = -Math.abs(screen.width);
       } else {
-         positioning = 1536;
+         positioning = screen.width;
       }
 
       let window = remote.getCurrentWindow();
@@ -40,18 +40,15 @@ imgs.forEach(img => {
             width: screen.width,
             height: screen.height
          });
-
          win.webContents.openDevTools();
 
          if (this.id === 'affiche_pablo') {
             isPabloActive = true;
             modalPath = path.join('file://', __dirname, 'detaxe.html');
-            // ipc.send('affiche-ajoutee', 'affiche_pablo');
          }
          if (this.id === 'acces_interdit2') {
             acces_interdit2 = true;
             modalPath = path.join('file://', __dirname, 'accesInterdit.html');
-            // ipc.send('affiche-ajoutee', 'acces_interdit2');
          }
          win.loadURL(modalPath);
          win.setPosition(positioning, 0);
@@ -69,9 +66,6 @@ imgs.forEach(img => {
             }
             // window.close();
          });
-         // win.on('close', function() {
-         //    win = null;
-         // });
       }
    });
 });

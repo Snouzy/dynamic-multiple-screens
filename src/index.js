@@ -44,9 +44,9 @@ document.querySelector('.btnReload').addEventListener('click', function() {
 //Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
+      //Nombre d'affichage
       document.getElementById('numberOfDisplays').innerHTML =
          BrowserWindow.getAllWindows().length - 2;
-      console.log(this.id);
       ipc.send('capturing-supprimerAffichage-click', this.id);
       // ENTREE
       BrowserWindow.getAllWindows().forEach(el => {
