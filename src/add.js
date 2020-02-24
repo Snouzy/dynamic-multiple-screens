@@ -5,31 +5,36 @@ const remote = electron.remote;
 const ipc = electron.ipcRenderer;
 const imgs = document.querySelectorAll('img');
 let win;
+
+deleteOldWindows = object => {
+   BrowserWindow.getAllWindows().forEach(el => {
+      if (object.rowClicked === 'entree') {
+         if (el.getTitle() === object.entree.src) {
+            el.close();
+         }
+      } else {
+         if (el.getTitle() === object.borne.src) {
+            el.close();
+         }
+      }
+   });
+};
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       const readResponse = ipc.sendSync('read-infos');
       console.log('read response = ', readResponse);
       // Supprime les vieilles fenêtres BrowserWindow
-      BrowserWindow.getAllWindows().forEach(el => {
-         if (readResponse.rowClicked === 'entree') {
-            if (el.getTitle() === readResponse.entree.src) {
-               el.close();
-            }
-         } else {
-            if (el.getTitle() === readResponse.borne.src) {
-               el.close();
-            }
-         }
-      });
+      deleteOldWindows(readResponse);
+      // Update le main
       const response = ipc.sendSync('getAndUpdateInfos', this.id);
       console.log(response);
 
-      // Gauche ou droite ?
-      let positioning;
+      // Prépare le positionnement à gauche ou à droite en fonction de l'id
+      let positionOfTheDisplay;
       if (response.rowClicked === 'entree') {
-         positioning = -Math.abs(screen.width);
+         positionOfTheDisplay = -Math.abs(screen.width);
       } else {
-         positioning = screen.width;
+         positionOfTheDisplay = screen.width;
       }
 
       let window = remote.getCurrentWindow();
@@ -44,35 +49,19 @@ imgs.forEach(img => {
          frame: true,
          alwaysOnTop: false,
          width: screen.width,
-         height: screen.height
+         height: screen.height,
+         x: positionOfTheDisplay,
+         y: 0
       });
       win.webContents.openDevTools();
 
       modalPath = path.join('file://', __dirname, `${this.id}.html`);
 
       win.loadURL(modalPath);
-      win.setPosition(positioning, 0);
       win.show();
       win.webContents.on('did-finish-load', () => {
-         if (this.id === 'affiche_pablo') {
-            ipc.send('affiche-ajoutee', this.id);
-         }
-         if (this.id === 'acces_interdit2') {
-            ipc.send('affiche-ajoutee', this.id);
-         }
-         if (this.id === 'parking') {
-            ipc.send('affiche-ajoutee', this.id);
-         }
-
+         ipc.send('affiche-ajoutee', this.id);
          window.close();
       });
    });
 });
-
-// const updateBtn = document.getElementById('updateBtn');
-
-// updateBtn.addEventListener('click', function() {
-//    ipc.send('update-notify-value', document.getElementById('notifyVal').value);
-//    const window = remote.getCurrentWindow();
-//    window.close();
-// });
