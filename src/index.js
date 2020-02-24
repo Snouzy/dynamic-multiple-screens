@@ -38,7 +38,13 @@ document.querySelector('.btnReload').addEventListener('click', function() {
    });
    ipc.send('reload');
 });
-
+/**
+ * Delete the infos in the dashboard
+ * @param  { object } imgElt - HTMLElement
+ * @param  { string } mainText - HTMLElement
+ * @param  { string } infoText - HTMLElement
+ * @param  { object } eltToClose - BrowserWindow element
+ */
 const deleteInfos = (imgElt, mainText, infoText, eltToClose) => {
    eltToClose.close();
    imgElt.setAttribute('data-image', '');
@@ -78,7 +84,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
    });
 });
 
-//Au click sur "Choisir une image..." -> add.html / add.js
+//Au click sur "Choisir une image..." -> go to add.html / add.js
 imgsLinks.forEach(btn => {
    btn.addEventListener('click', function(event) {
       modalPath = path.join('file://', __dirname, 'add.html');
@@ -108,13 +114,6 @@ imgsLinks.forEach(btn => {
          win = null;
       });
    });
-});
-
-ipc.on('sending-click-ID-from-main', () => {
-   console.log('sending-click-ID-from-main received on index.js');
-});
-ipc.on('img-added', function() {
-   console.log('capturing img-added on index.js');
 });
 
 /* Gère les thumbnails */

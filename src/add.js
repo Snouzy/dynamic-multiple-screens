@@ -6,14 +6,18 @@ const ipc = electron.ipcRenderer;
 const imgs = document.querySelectorAll('img');
 let win;
 
-deleteOldWindows = object => {
+/**
+ * Delete the old window before displaying the new one
+ * @param  { object } response - Sended by the main process
+ */
+const deleteOldWindows = response => {
    BrowserWindow.getAllWindows().forEach(el => {
-      if (object.rowClicked === 'entree') {
-         if (el.getTitle() === object.entree.src) {
+      if (response.rowClicked === 'entree') {
+         if (el.getTitle() === response.entree.src) {
             el.close();
          }
       } else {
-         if (el.getTitle() === object.borne.src) {
+         if (el.getTitle() === response.borne.src) {
             el.close();
          }
       }
@@ -23,9 +27,11 @@ imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       const readResponse = ipc.sendSync('read-infos');
       console.log('read response = ', readResponse);
+
       // Supprime les vieilles fenêtres BrowserWindow
       deleteOldWindows(readResponse);
-      // Update le main
+
+      // Update le main avec la nouvelle image
       const response = ipc.sendSync('getAndUpdateInfos', this.id);
       console.log(response);
 
