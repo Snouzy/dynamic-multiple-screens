@@ -56,7 +56,7 @@ imgs.forEach(img => {
          width: screen.width,
          height: screen.height
       });
-      win.webContents.openDevTools();
+      // win.webContents.openDevTools();
 
       modalPath = path.join('file://', __dirname, `${this.id}.html`);
 

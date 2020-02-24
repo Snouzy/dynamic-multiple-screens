@@ -14,7 +14,7 @@ function createWindow() {
    // et charger le fichier index.html de l'application.
    win.loadFile('src/index.html');
 
-   win.webContents.openDevTools();
+   // win.webContents.openDevTools();
    // Ouvre les DevTools.
 }
 // const menu = Menu.buildFromTemplate([

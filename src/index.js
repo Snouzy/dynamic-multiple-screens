@@ -89,6 +89,7 @@ imgsLinks.forEach(btn => {
          show: false,
          frame: true,
          alwaysOnTop: true,
+         backgroundColor: '#1a1a1a',
          width: 600,
          height: 1000
       });
@@ -96,7 +97,7 @@ imgsLinks.forEach(btn => {
       win.setMenu(null);
       win.loadURL(modalPath);
       win.show();
-      win.webContents.openDevTools();
+      // win.webContents.openDevTools();
       rowClicked = this.id;
       ipc.send('add-img', rowClicked);
 
