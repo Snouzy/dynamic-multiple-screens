@@ -1,3 +1,5 @@
+//FIRST LINE
+const nbOfDisplaySpan = document.getElementById('numberOfDisplays');
 /* 
 =============== 
 ENTREE LINE
@@ -37,96 +39,39 @@ document.querySelector('.btnReload').addEventListener('click', function() {
    ipc.send('reload');
 });
 
-//Clique sur le bouton supprimer
+const deleteInfos = (imgElt, mainText, infoText, eltToClose) => {
+   eltToClose.close();
+   imgElt.setAttribute('data-image', '');
+   imgElt.style.display = 'none';
+   mainText.style.display = 'block';
+   infoText.innerHTML = 'Aucun';
+};
+
+// Clic sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
-      //avoid negative numbers
-      if (document.getElementById('numberOfDisplays').innerHTML == 0) return;
+      // update le nb de displays
+      if (nbOfDisplaySpan.innerHTML == 0) return;
+      else nbOfDisplaySpan.innerHTML = BrowserWindow.getAllWindows().length - 2;
+
+      // get the infos of what was clicked
       ipc.send('capturing-supprimerAffichage-click', this.id);
       const readResponse = ipc.sendSync('read-infos');
-      // if(readResponse.rowClicked === 'entree'){
-      //    if(readResponse.entree.src === )
-      // } else {
-
-      // }
       console.log('read response = ', readResponse);
 
-      //update nb of displays
-      document.getElementById('numberOfDisplays').innerHTML =
-         BrowserWindow.getAllWindows().length - 2;
-      // ENTREE
       BrowserWindow.getAllWindows().forEach(el => {
-         console.log(el.getPosition()[0]);
+         // LIGNE ENTREE CLIQUEE
+         let dataImg;
          if (this.id === 'btnDelete-entree') {
-            if (
-               entreeThumbnail.getAttribute('data-image') === 'affiche_pablo'
-            ) {
-               entreeThumbnail.setAttribute('data-image', '');
-               if (
-                  el.getTitle() === 'affiche_pablo' &&
-                  el.getPosition()[0] < 0
-               ) {
-                  el.close();
-                  entreeThumbnail.style.display = `none`;
-                  entreeMainText.style.display = `block`;
-                  entreeInfoText.innerHTML = 'Aucun';
-               }
+            dataImg = entreeThumbnail.getAttribute('data-image');
+            if (el.getTitle() === dataImg && el.getPosition()[0] < 0) {
+               deleteInfos(entreeThumbnail, entreeMainText, entreeInfoText, el);
             }
-            if (
-               entreeThumbnail.getAttribute('data-image') === 'acces_interdit2'
-            ) {
-               if (
-                  el.getTitle() === 'acces_interdit2' &&
-                  el.getPosition()[0] < 0
-               ) {
-                  el.close();
-                  entreeThumbnail.style.display = `none`;
-                  entreeMainText.style.display = `block`;
-                  entreeInfoText.innerHTML = 'Aucun';
-               }
-            }
-            if (entreeThumbnail.getAttribute('data-image') === 'parking') {
-               if (el.getTitle() === 'parking' && el.getPosition()[0] < 0) {
-                  el.close();
-                  entreeThumbnail.style.display = `none`;
-                  entreeMainText.style.display = `block`;
-                  entreeInfoText.innerHTML = 'Aucun';
-               }
-            }
-         }
-         //BORNE
-         if (this.id === 'btnDelete-borne-pablo') {
-            if (pabloThumbnail.getAttribute('data-image') === 'affiche_pablo') {
-               if (
-                  el.getTitle() === 'affiche_pablo' &&
-                  el.getPosition()[0] > 0
-               ) {
-                  el.close();
-                  pabloThumbnail.style.display = `none`;
-                  pabloMainText.style.display = `block`;
-                  pabloInfoText.innerHTML = 'Aucun';
-               }
-            }
-            if (
-               pabloThumbnail.getAttribute('data-image') === 'acces_interdit2'
-            ) {
-               if (
-                  el.getTitle() === 'acces_interdit2' &&
-                  el.getPosition()[0] > 0
-               ) {
-                  el.close();
-                  pabloThumbnail.style.display = `none`;
-                  pabloMainText.style.display = `block`;
-                  pabloInfoText.innerHTML = 'Aucun';
-               }
-            }
-            if (pabloThumbnail.getAttribute('data-image') === 'parking') {
-               if (el.getTitle() === 'parking' && el.getPosition()[0] > 0) {
-                  el.close();
-                  pabloThumbnail.style.display = `none`;
-                  pabloMainText.style.display = `block`;
-                  pabloInfoText.innerHTML = 'Aucun';
-               }
+         } else {
+            //LIGNE PABLO CLIQUEE
+            dataImg = pabloThumbnail.getAttribute('data-image');
+            if (el.getTitle() === dataImg && el.getPosition()[0] > 0) {
+               deleteInfos(pabloThumbnail, pabloMainText, pabloInfoText, el);
             }
          }
       });
@@ -174,14 +119,9 @@ ipc.on('img-added', function() {
 
 /* Gère les thumbnails */
 ipc.on('newAffiche', function(event, arg) {
-   document.getElementById('numberOfDisplays').innerHTML =
-      BrowserWindow.getAllWindows().length - 2;
+   document.getElementById('numberOfDisplays').innerHTML = BrowserWindow.getAllWindows().length - 2;
    /* LIGNE ENTREE  */
-   if (
-      arg === 'affiche_pablo' &&
-      rowClicked === 'imgChoose-entree' &&
-      entreeThumbnail.getAttribute('data-image') !== arg
-   ) {
+   if (arg === 'affiche_pablo' && rowClicked === 'imgChoose-entree' && entreeThumbnail.getAttribute('data-image') !== arg) {
       entreeThumbnail.src = `../assets/images/${arg}.png`;
       entreeThumbnail.style.display = `block`;
       entreeThumbnail.setAttribute('data-image', arg);
