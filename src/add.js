@@ -45,15 +45,14 @@ imgs.forEach(img => {
 
       let window = remote.getCurrentWindow();
       let modalPath;
-      // S'il y a déjà un affichage
 
       win = new BrowserWindow({
          title: 'fullscreen-img',
          webPreferences: {
             nodeIntegration: true
          },
-         frame: true,
-         alwaysOnTop: false,
+         frame: false,
+         alwaysOnTop: true,
          width: screen.width,
          height: screen.height,
          x: positionOfTheDisplay,
