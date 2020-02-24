@@ -154,6 +154,10 @@ ipc.on('getAndUpdateInfos', (event, arg) => {
    event.returnValue = currentDisplay;
 });
 
+/***
+ * Lecture des infos afin de supprimer les anciennes BrowserWindow
+ * FROM main.js TO add.js
+ ***/
 ipc.on('read-infos', (event, arg) => {
    event.returnValue = currentDisplay;
 });

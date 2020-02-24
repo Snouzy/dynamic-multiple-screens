@@ -10,6 +10,18 @@ imgs.forEach(img => {
    img.addEventListener('click', function(event) {
       const readResponse = ipc.sendSync('read-infos');
       console.log('read response = ', readResponse);
+      // Supprime les vieilles BrowserWindow
+      BrowserWindow.getAllWindows().forEach(el => {
+         if (readResponse.rowClicked === 'entree') {
+            if (el.getTitle() === readResponse.entree.src) {
+               el.close();
+            }
+         } else {
+            if (el.getTitle() === readResponse.borne.src) {
+               el.close();
+            }
+         }
+      });
       console.log(this.id);
       const response = ipc.sendSync('getAndUpdateInfos', this.id);
       console.log(response);
@@ -64,7 +76,7 @@ imgs.forEach(img => {
             if (this.id === 'parking') {
                ipc.send('affiche-ajoutee', this.id);
             }
-            // window.close();
+            window.close();
          });
       }
    });

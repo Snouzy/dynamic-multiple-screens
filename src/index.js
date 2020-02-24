@@ -44,6 +44,9 @@ document.querySelector('.btnReload').addEventListener('click', function() {
 //Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
+      const readResponse = ipc.sendSync('read-infos');
+      console.log('read response = ', readResponse);
+
       //Nombre d'affichage
       document.getElementById('numberOfDisplays').innerHTML =
          BrowserWindow.getAllWindows().length - 2;
@@ -55,7 +58,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
                entreeThumbnail.getAttribute('data-image') === 'affiche_pablo'
             ) {
                entreeThumbnail.setAttribute('data-image', '');
-               if (el.getTitle() === 'Détaxe & Taxe refund') {
+               if (el.getTitle() === 'affiche_pablo') {
                   el.close();
 
                   entreeThumbnail.style.display = `none`;
@@ -66,7 +69,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
             if (
                entreeThumbnail.getAttribute('data-image') === 'acces_interdit2'
             ) {
-               if (el.getTitle() === 'Accès Interdit') {
+               if (el.getTitle() === 'acces_interdit2') {
                   el.close();
                   entreeThumbnail.style.display = `none`;
                   entreeMainText.style.display = `block`;
@@ -77,7 +80,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
          //BORNE
          if (this.id === 'btnDelete-borne-pablo') {
             if (pabloThumbnail.getAttribute('data-image') === 'affiche_pablo') {
-               if (el.getTitle() === 'Détaxe & Taxe refund') {
+               if (el.getTitle() === 'affiche_pablo') {
                   el.close();
                   pabloThumbnail.style.display = `none`;
                   pabloMainText.style.display = `block`;
@@ -87,7 +90,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
             if (
                pabloThumbnail.getAttribute('data-image') === 'acces_interdit2'
             ) {
-               if (el.getTitle() === 'Accès Interdit') {
+               if (el.getTitle() === 'acces_interdit2') {
                   el.close();
                   pabloThumbnail.style.display = `none`;
                   pabloMainText.style.display = `block`;
