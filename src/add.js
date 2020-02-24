@@ -8,16 +8,21 @@ const imgs = document.querySelectorAll('img');
 let win;
 let isPabloActive = false;
 let acces_interdit2 = false;
-
-ipc.on('sending-click-ID-from-main', (event, arg) => {
-   console.log(event);
-   console.log('Hello from add.js');
-   console.log(arg);
-});
+let isTheFirstChange = true;
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
-      const response = ipc.sendSync('message-synchrone-getImg');
+      console.log(this.id);
+      const response = ipc.sendSync('getImgInfos', this.id);
       console.log(response);
+
+      // Gauche ou droite ?
+      let positioning;
+      if (response.rowClicked === 'entree') {
+         positioning = -1536;
+      } else {
+         positioning = 1536;
+      }
+
       let window = remote.getCurrentWindow();
       let modalPath;
       // S'il y a déjà un affichage
@@ -49,7 +54,7 @@ imgs.forEach(img => {
             // ipc.send('affiche-ajoutee', 'acces_interdit2');
          }
          win.loadURL(modalPath);
-         win.setPosition(1536, 0);
+         win.setPosition(positioning, 0);
          win.show();
 
          win.webContents.on('did-finish-load', () => {

@@ -90,12 +90,7 @@ ipc.on('open-img', function(event, arg) {
    win.webContents.send('test', 'testing');
 });
 
-ipc.on('changeURL', function(event, arg) {
-   console.log('captured changeURL');
-   win.webContents.send('changingURL', arg);
-});
-
-let currentDisplay = {
+const currentDisplay = {
    entree: {
       isDisplaying: false,
       src: ''
@@ -103,23 +98,56 @@ let currentDisplay = {
    borne: {
       isDisplaying: false,
       src: ''
-   }
+   },
+   rowClicked: ''
 };
-// Au clic sur Choisir une image...
-ipc.on('capturing-click', function(event, arg) {
-   console.log('Capturing the click : ', arg);
+// Au clic sur une des image : get src et modifie currentDisplay
+ipc.on('image-clicked', function(event, arg) {
+   console.log('captured changeURL with:', arg);
+   win.webContents.send('changingURL', arg);
+});
+
+// Au clic sur Choisir une image : change les props de currentDisplay
+ipc.on('capturing-choisirImg-click', function(event, arg) {
    switch (arg) {
       case 'imgChoose-entree':
-         currentDisplay.entree.isDisplaying = true;
+         currentDisplay.rowClicked = 'entree';
          break;
       case 'imgChoose-borne-pablo':
          currentDisplay.borne.isDisplaying = true;
+         currentDisplay.rowClicked = 'borne';
+         break;
    }
-   win.webContents.send('sending-click-ID-from-main', arg);
+   // currentDisplay.rowClicked = arg;
 });
 
-// Donne l'image cliquée récupéréer depuis capturing-click
-// FROM index.js et le rend TO add.js
-ipc.on('message-synchrone-getImg', (event, arg) => {
+// Au clic sur Supprimer l'affichage : change les props de currentDisplay
+ipc.on('capturing-supprimerAffichage-click', (event, arg) => {
+   switch (arg) {
+      case 'btnDelete-entree':
+         currentDisplay.entree.isDisplaying = false;
+         currentDisplay.entree.src = '';
+         break;
+      case 'btnDelete-borne-pablo':
+         currentDisplay.borne.isDisplaying = false;
+         currentDisplay.borne.src = '';
+         break;
+   }
+   console.log(currentDisplay);
+});
+
+/***
+ * Donne les infos récupérées depui capturing-choisirImg-click
+ * FROM index.js et le rend TO add.js
+ ***/
+ipc.on('getImgInfos', (event, arg) => {
+   if (currentDisplay.rowClicked === 'entree') {
+      currentDisplay.entree.isDisplaying = true;
+      currentDisplay.entree.src = arg;
+   }
+   if (currentDisplay.rowClicked === 'borne') {
+      currentDisplay.borne.isDisplaying = true;
+      currentDisplay.borne.src = arg;
+   }
    event.returnValue = currentDisplay;
 });

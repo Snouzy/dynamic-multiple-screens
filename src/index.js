@@ -40,11 +40,14 @@ document.querySelector('.btnReload').addEventListener('click', function() {
    });
    ipc.send('reload');
 });
+
 //Clique sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
       document.getElementById('numberOfDisplays').innerHTML =
          BrowserWindow.getAllWindows().length - 2;
+      console.log(this.id);
+      ipc.send('capturing-supprimerAffichage-click', this.id);
       // ENTREE
       BrowserWindow.getAllWindows().forEach(el => {
          if (this.id === 'btnDelete-entree') {
@@ -71,6 +74,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
                }
             }
          }
+         //BORNE
          if (this.id === 'btnDelete-borne-pablo') {
             if (pabloThumbnail.getAttribute('data-image') === 'affiche_pablo') {
                if (el.getTitle() === 'Détaxe & Taxe refund') {
@@ -118,7 +122,7 @@ imgsLinks.forEach(btn => {
       win.webContents.openDevTools();
 
       win.webContents.on('did-finish-load', () => {
-         ipc.send('capturing-click', this.id);
+         ipc.send('capturing-choisirImg-click', this.id);
       });
 
       win.on('close', function() {
