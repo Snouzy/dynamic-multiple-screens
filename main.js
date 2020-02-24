@@ -127,10 +127,12 @@ ipc.on('capturing-supprimerAffichage-click', (event, arg) => {
       case 'btnDelete-entree':
          currentDisplay.entree.isDisplaying = false;
          currentDisplay.entree.src = '';
+         currentDisplay.rowClicked = 'entree';
          break;
       case 'btnDelete-borne-pablo':
          currentDisplay.borne.isDisplaying = false;
          currentDisplay.borne.src = '';
+         currentDisplay.rowClicked = 'borne';
          break;
    }
    console.log(currentDisplay);
