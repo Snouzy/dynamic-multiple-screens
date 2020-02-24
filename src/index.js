@@ -1,43 +1,37 @@
-//FIRST LINE
-const nbOfDisplaySpan = document.getElementById('numberOfDisplays');
-/* 
-=============== 
-ENTREE LINE
-=============== */
-const entreeThumbnail = document.getElementById('entree-thumbnail');
-const entreeInfoText = document.getElementById('entree-info-text');
-const entreeMainText = document.getElementById('entree-main-text');
-/* 
-=============== 
-PABLO LINE
-=============== */
-const pabloThumbnail = document.getElementById('pablo-thumbnail');
-const pabloInfoText = document.getElementById('pablo-info-text');
-const pabloMainText = document.getElementById('pablo-main-text');
-
-/* 
-=============== 
-GENERAL 
-=============== */
+// général
+const btnReload = document.querySelector('.btnReload');
+const imgsLinks = document.querySelectorAll('.imgChoose');
 const electron = require('electron');
 const path = require('path');
 const remote = electron.remote;
 const BrowserWindow = electron.remote.BrowserWindow;
 const ipc = electron.ipcRenderer;
-const imgsLinks = document.querySelectorAll('.imgChoose');
 let rowClicked = '';
 let win;
 let modalPath;
 
-//Clique sur le bouton fermer tous les affichages
-document.querySelector('.btnReload').addEventListener('click', function() {
+// ligne "affichage"
+const nbOfDisplaySpan = document.getElementById('numberOfDisplays');
+
+// ligne "entrée"
+const entreeThumbnail = document.getElementById('entree-thumbnail');
+const entreeInfoText = document.getElementById('entree-info-text');
+const entreeMainText = document.getElementById('entree-main-text');
+
+// ligne "pablo"
+const pabloThumbnail = document.getElementById('pablo-thumbnail');
+const pabloInfoText = document.getElementById('pablo-info-text');
+const pabloMainText = document.getElementById('pablo-main-text');
+
+//Clique sur le bouton "éteindre tous les affichages"
+btnReload.addEventListener('click', () => {
    BrowserWindow.getAllWindows().forEach(el => {
-      if (el.getTitle() !== remote.getCurrentWindow().getTitle()) {
-         el.close();
-      }
+      const currentTitle = remote.getCurrentWindow().getTitle();
+      el.getTitle() !== currentTitle ? el.close : null;
    });
    ipc.send('reload');
 });
+
 /**
  * Delete the infos in the dashboard
  * @param  { object } imgElt - HTMLElement
@@ -84,7 +78,7 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
    });
 });
 
-//Au click sur "Choisir une image..." -> go to add.html / add.js
+//Au click sur "Changer l'affichage..." -> go to add.html / add.js
 imgsLinks.forEach(btn => {
    btn.addEventListener('click', function(event) {
       modalPath = path.join('file://', __dirname, 'add.html');
@@ -101,10 +95,10 @@ imgsLinks.forEach(btn => {
 
       win.setMenu(null);
       win.loadURL(modalPath);
-      rowClicked = this.id;
-      ipc.send('add-img', this.id);
       win.show();
       win.webContents.openDevTools();
+      rowClicked = this.id;
+      ipc.send('add-img', rowClicked);
 
       win.webContents.on('did-finish-load', () => {
          ipc.send('capturing-choisirImg-click', this.id);
@@ -124,9 +118,9 @@ ipc.on('newAffiche', function(event, arg) {
       entreeThumbnail.src = `../assets/images/${arg}.png`;
       entreeThumbnail.style.display = `block`;
       entreeThumbnail.setAttribute('data-image', arg);
+      entreeThumbnail.style.width = `15rem`;
       entreeInfoText.innerHTML = arg;
       entreeMainText.style.display = `none`;
-      entreeThumbnail.style.width = `15rem`;
    }
    if (arg === 'parking' && rowClicked === 'imgChoose-entree') {
       entreeThumbnail.src = `../assets/images/${arg}.png`;
