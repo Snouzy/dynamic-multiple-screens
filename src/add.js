@@ -8,18 +8,17 @@ const imgs = document.querySelectorAll('img');
 let win;
 let isPabloActive = false;
 let acces_interdit2 = false;
-console.log('hello from the global ccontext');
 
-// global.windowAdd = 'windowADD';
-
-// ipcRenderer.send('my-closeallwindowsasap-channel'); // envoi un evt pour fermer toutes les fenêtres
-closeBtn.addEventListener('click', function(event) {
-   var window = remote.getCurrentWindow();
-   window.close();
+ipc.on('sending-click-ID-from-main', (event, arg) => {
+   console.log(event);
+   console.log('Hello from add.js');
+   console.log(arg);
 });
-
 imgs.forEach(img => {
    img.addEventListener('click', function(event) {
+      const response = ipc.sendSync('message-synchrone-getImg');
+      console.log(response);
+      let window = remote.getCurrentWindow();
       let modalPath;
       // S'il y a déjà un affichage
       if (isPabloActive) {
@@ -55,13 +54,16 @@ imgs.forEach(img => {
 
          win.webContents.on('did-finish-load', () => {
             if (this.id === 'affiche_pablo') {
-               ipc.send('affiche-ajoutee', 'affiche_pablo');
+               ipc.send('affiche-ajoutee', this.id);
             }
             if (this.id === 'acces_interdit2') {
-               ipc.send('affiche-ajoutee', 'acces_interdit2');
+               ipc.send('affiche-ajoutee', this.id);
             }
+            if (this.id === 'parking') {
+               ipc.send('affiche-ajoutee', this.id);
+            }
+            // window.close();
          });
-
          // win.on('close', function() {
          //    win = null;
          // });

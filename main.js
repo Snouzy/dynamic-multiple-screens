@@ -3,9 +3,6 @@ const shell = require('electron').shell;
 const ipc = require('electron').ipcMain;
 let win;
 const { webContents } = require('electron');
-global.windowAdd = null;
-global.windowIndex = null;
-
 function createWindow() {
    // Cree la fenetre du navigateur.
    win = new BrowserWindow({
@@ -61,7 +58,9 @@ app.on('window-all-closed', () => {
       app.quit();
    }
 });
-
+app.on('new-window-for-tab', () => {
+   console.log('new-window-for-tab');
+});
 app.on('activate', () => {
    // Sur macOS, il est commun de re-créer une fenêtre de l'application quand
    // l'icône du dock est cliquée et qu'il n'y a pas d'autres fenêtres d'ouvertes.
@@ -94,4 +93,33 @@ ipc.on('open-img', function(event, arg) {
 ipc.on('changeURL', function(event, arg) {
    console.log('captured changeURL');
    win.webContents.send('changingURL', arg);
+});
+
+let currentDisplay = {
+   entree: {
+      isDisplaying: false,
+      src: ''
+   },
+   borne: {
+      isDisplaying: false,
+      src: ''
+   }
+};
+// Au clic sur Choisir une image...
+ipc.on('capturing-click', function(event, arg) {
+   console.log('Capturing the click : ', arg);
+   switch (arg) {
+      case 'imgChoose-entree':
+         currentDisplay.entree.isDisplaying = true;
+         break;
+      case 'imgChoose-borne-pablo':
+         currentDisplay.borne.isDisplaying = true;
+   }
+   win.webContents.send('sending-click-ID-from-main', arg);
+});
+
+// Donne l'image cliquée récupéréer depuis capturing-click
+// FROM index.js et le rend TO add.js
+ipc.on('message-synchrone-getImg', (event, arg) => {
+   event.returnValue = currentDisplay;
 });
