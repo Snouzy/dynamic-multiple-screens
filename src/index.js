@@ -111,58 +111,28 @@ imgsLinks.forEach(btn => {
    });
 });
 
+const updateInfos = (imgElt, infoText, mainText, argByMain) => {
+   if (imgElt.getAttribute('data-image') !== argByMain) {
+      let size;
+      if (argByMain === 'affiche_pablo') size = '15rem';
+      else size = '8rem';
+      imgElt.src = `../assets/images/${argByMain}.png`;
+      imgElt.style.display = 'block';
+      imgElt.setAttribute('data-image', argByMain);
+      imgElt.style.width = size;
+      infoText.innerHTML = argByMain;
+      mainText.style.display = 'none';
+   }
+};
 /* Gère les thumbnails */
 ipc.on('newAffiche', function(event, arg) {
    document.getElementById('numberOfDisplays').innerHTML = BrowserWindow.getAllWindows().length - 2;
    /* LIGNE ENTREE  */
-   if (arg === 'affiche_pablo' && rowClicked === 'imgChoose-entree' && entreeThumbnail.getAttribute('data-image') !== arg) {
-      entreeThumbnail.src = `../assets/images/${arg}.png`;
-      entreeThumbnail.style.display = `block`;
-      entreeThumbnail.setAttribute('data-image', arg);
-      entreeThumbnail.style.width = `15rem`;
-      entreeInfoText.innerHTML = arg;
-      entreeMainText.style.display = `none`;
-   }
-   if (arg === 'parking' && rowClicked === 'imgChoose-entree') {
-      entreeThumbnail.src = `../assets/images/${arg}.png`;
-      entreeThumbnail.style.display = `block`;
-      entreeThumbnail.setAttribute('data-image', arg);
-      entreeThumbnail.style.width = `8rem`;
-      entreeInfoText.innerHTML = arg;
-      entreeMainText.style.display = `none`;
-   }
-   if (arg === 'acces_interdit2' && rowClicked === 'imgChoose-entree') {
-      entreeThumbnail.src = `../assets/images/${arg}.png`;
-      entreeThumbnail.style.display = `block`;
-      entreeThumbnail.setAttribute('data-image', arg);
-      entreeThumbnail.style.width = `8rem`;
-      entreeInfoText.innerHTML = arg;
-      entreeMainText.style.display = `none`;
-   }
-   /* LIGNE PABLO  */
-   if (arg === 'affiche_pablo' && rowClicked === 'imgChoose-borne-pablo') {
-      pabloThumbnail.src = `../assets/images/${arg}.png`;
-      pabloThumbnail.style.display = `block`;
-      pabloThumbnail.setAttribute('data-image', arg);
-      pabloThumbnail.style.width = `15rem`;
-      pabloInfoText.innerHTML = arg;
-      pabloMainText.style.display = `none`;
-   }
-   if (arg === 'parking' && rowClicked === 'imgChoose-borne-pablo') {
-      pabloThumbnail.src = `../assets/images/${arg}.png`;
-      pabloThumbnail.style.display = `block`;
-      pabloThumbnail.setAttribute('data-image', arg);
-      pabloThumbnail.style.width = `8rem`;
-      pabloInfoText.innerHTML = arg;
-      pabloMainText.style.display = `none`;
-   }
-   if (arg === 'acces_interdit2' && rowClicked === 'imgChoose-borne-pablo') {
-      pabloThumbnail.src = `../assets/images/${arg}.png`;
-      pabloThumbnail.style.display = `block`;
-      pabloThumbnail.setAttribute('data-image', arg);
-      pabloThumbnail.style.width = `8rem`;
-      pabloInfoText.innerHTML = arg;
-      pabloMainText.style.display = `none`;
+   if (rowClicked === 'imgChoose-entree') {
+      updateInfos(entreeThumbnail, entreeInfoText, entreeMainText, arg);
+   } else {
+      /* LIGNE PABLO  */
+      updateInfos(pabloThumbnail, pabloInfoText, pabloMainText, arg);
    }
 });
 
