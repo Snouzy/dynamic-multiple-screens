@@ -32,32 +32,18 @@ btnReload.addEventListener('click', () => {
    ipc.send('reload');
 });
 
-/**
- * Delete the infos in the dashboard
- * @param  { object } imgElt - HTMLElement
- * @param  { string } mainText - HTMLElement
- * @param  { string } infoText - HTMLElement
- * @param  { object } eltToClose - BrowserWindow element
- */
-const deleteInfos = (imgElt, mainText, infoText, eltToClose) => {
-   eltToClose.close();
-   imgElt.setAttribute('data-image', '');
-   imgElt.style.display = 'none';
-   mainText.style.display = 'block';
-   infoText.innerHTML = 'Aucun';
-};
-
 // Clic sur le bouton supprimer
 document.querySelectorAll('.btnDelete').forEach(btn => {
    btn.addEventListener('click', function() {
       // update le nb de displays
       if (nbOfDisplaySpan.innerHTML == 0) return;
+      //impossible to have -1, -2...
       else nbOfDisplaySpan.innerHTML = BrowserWindow.getAllWindows().length - 2;
 
       // get the infos of what was clicked
       ipc.send('capturing-supprimerAffichage-click', this.id);
-      const readResponse = ipc.sendSync('read-infos');
-      console.log('read response = ', readResponse);
+      const readResponse = ipc.sendSync('read-infos'); //update the global object
+      console.log('read response = ', readResponse); //reading the new global object
 
       BrowserWindow.getAllWindows().forEach(el => {
          // LIGNE ENTREE CLIQUEE
@@ -65,12 +51,14 @@ document.querySelectorAll('.btnDelete').forEach(btn => {
          if (this.id === 'btnDelete-entree') {
             dataImg = entreeThumbnail.getAttribute('data-image');
             if (el.getTitle() === dataImg && el.getPosition()[0] < 0) {
+               //delete the left screen
                deleteInfos(entreeThumbnail, entreeMainText, entreeInfoText, el);
             }
          } else {
             //LIGNE PABLO CLIQUEE
             dataImg = pabloThumbnail.getAttribute('data-image');
             if (el.getTitle() === dataImg && el.getPosition()[0] > 0) {
+               //delete the right screen
                deleteInfos(pabloThumbnail, pabloMainText, pabloInfoText, el);
             }
          }
@@ -111,32 +99,55 @@ imgsLinks.forEach(btn => {
    });
 });
 
+/* Gère les thumbnails quand une image est cliquée dans add.html */
+ipc.on('newAffiche', function(event, arg) {
+   nbOfDisplaySpan.innerHTML = BrowserWindow.getAllWindows().length - 2;
+   //update the good line
+   if (rowClicked === 'imgChoose-entree') {
+      updateInfos(entreeThumbnail, entreeInfoText, entreeMainText, arg);
+   } else {
+      updateInfos(pabloThumbnail, pabloInfoText, pabloMainText, arg);
+   }
+});
+
+//Close the entire app
+document.querySelector('.btnClose').addEventListener('click', function() {
+   ipc.send('closeallwindows');
+});
+
+// Functions :
+
+/**
+ * @param  { object } imgElt - HTMLElement
+ * @param  { string } infoText - HTMLElement (<strong> witch is replacing the span with the "Aucun" text in "Affichage actuel :")
+ * @param  { string } mainText - HTMLElement (<h1> witch is replacing the img with the "Aucun" text)
+ * @param  { string } argByMain - The id of the image element clicked
+ */
 const updateInfos = (imgElt, infoText, mainText, argByMain) => {
    if (imgElt.getAttribute('data-image') !== argByMain) {
       let size;
       if (argByMain === 'affiche_pablo') size = '15rem';
       else size = '8rem';
+      imgElt.setAttribute('data-image', argByMain);
       imgElt.src = `../assets/images/${argByMain}.png`;
       imgElt.style.display = 'block';
-      imgElt.setAttribute('data-image', argByMain);
       imgElt.style.width = size;
       infoText.innerHTML = argByMain;
       mainText.style.display = 'none';
    }
 };
-/* Gère les thumbnails */
-ipc.on('newAffiche', function(event, arg) {
-   document.getElementById('numberOfDisplays').innerHTML = BrowserWindow.getAllWindows().length - 2;
-   /* LIGNE ENTREE  */
-   if (rowClicked === 'imgChoose-entree') {
-      updateInfos(entreeThumbnail, entreeInfoText, entreeMainText, arg);
-   } else {
-      /* LIGNE PABLO  */
-      updateInfos(pabloThumbnail, pabloInfoText, pabloMainText, arg);
-   }
-});
 
-//Close the app
-document.querySelector('.btnClose').addEventListener('click', function() {
-   ipc.send('closeallwindows');
-});
+/**
+ * Delete the infos in the dashboard
+ * @param  { object } imgElt - HTMLElement
+ * @param  { string } mainText - HTMLElement
+ * @param  { string } infoText - HTMLElement
+ * @param  { object } eltToClose - BrowserWindow element
+ */
+const deleteInfos = (imgElt, mainText, infoText, eltToClose) => {
+   eltToClose.close();
+   imgElt.setAttribute('data-image', '');
+   imgElt.style.display = 'none';
+   mainText.style.display = 'block';
+   infoText.innerHTML = 'Aucun';
+};
