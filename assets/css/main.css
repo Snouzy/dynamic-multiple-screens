@@ -6,8 +6,18 @@ body {
    font-family: 'Montserrat';
    margin: 0;
 }
-#creator {
+#creator,
+#emplacement {
    opacity: 0.3;
+   text-align: center;
+}
+#logo {
+   height: 5rem;
+   border-radius: 2px;
+}
+#spacer {
+   width: 5rem;
+   height: 5rem;
 }
 .row {
    width: 100%;
@@ -18,6 +28,11 @@ body {
    align-items: center;
    display: flex;
    justify-content: space-around;
+}
+.rowEnter {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
 }
 .rowClose,
 .rowEnter {

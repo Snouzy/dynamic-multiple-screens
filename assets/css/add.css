@@ -40,8 +40,7 @@ Thumbnails :
    display: flex;
    flex-direction: column;
    height: 100%;
-   background: linear-gradient(180deg, black, transparent);
-   background-color: #2f2e2e;
+   background-color: #1a1a1a;
 }
 
 .row2,

@@ -12,12 +12,14 @@
 
    <!-- Entrée -->
    <div class="row rowEnter">
-      <h1>Total d'affichage(s) ACTIF(S) :
+      <img id="logo" src="../assets/images/dgddi.jpg" alt="Logo douane">
+      <h1 id="numberOfDisplaysTitle">Total d'affichage(s) ACTIF(S) :
          <span id="numberOfDisplays">0</span> / 2</h1>
-
+      <div id="spacer"></div>
    </div>
    <div class="row">
       <div class="position-container">
+         <p id="emplacement">Emplacement :</p>
          <h1>ENTRÉE</h1>
       </div>
       <div class="actual-container">
@@ -37,7 +39,8 @@
    <!-- Borne PABLO -->
    <div class="row">
       <div class="position-container">
-         <h1>BORNE<br>PABLO</h1>
+         <p id="emplacement">Emplacement :</p>
+         <h1>BORNE</h1>
       </div>
       <div class="actual-container">
          <p class="subtext">Affichage Actuel :
@@ -53,7 +56,7 @@
    </div>
    <div class="row rowClose">
       <button class="btnClose">Fermer l'application</button>
-      <p id="creator">Created by Mathias Bradiceanu, 2020 ®</p>
+      <p id="creator">Snouz'Dynamic, 2020 ®<br>Created by Mathias Bradiceanu</p>
       <button class="btnReload">Éteindre tous les affichages</button>
    </div>
    <script src="index.js"></script>

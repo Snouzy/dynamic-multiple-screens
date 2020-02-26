@@ -79,7 +79,7 @@ imgsLinks.forEach(btn => {
          alwaysOnTop: true,
          backgroundColor: '#1a1a1a',
          width: 600,
-         height: 1000
+         height: 700
       });
 
       win.setMenu(null);
